@@ -146,7 +146,7 @@ type Config struct {
   Host string // "MYAPP_HOST" environment variable
 }
 
-qcl.Load(&Config{}, qcl.UseEnv(qcl.WithEnvPrefix("MYAPP_")))
+qcl.Load(&Config{}, qcl.UseEnv(qcl.WithEnvPrefix("MYAPP_"))) // the _ on the end is optional. It will be added automatically if not included.
 ```
 
 ### Custom Environment Variable Struct Tag
