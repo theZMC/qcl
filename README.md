@@ -39,7 +39,7 @@ defaultConfig := Config{
 conf, _ := qcl.Load(&defaultConfig)
 
 fmt.Printf("Host: %s\n", conf.Host) // "Host: localhost" from environment
-fmt.Printf("Port: %d\n", conf.Port) // "Host: 8081" from command line, overrides environment by default
+fmt.Printf("Port: %d\n", conf.Port) // "Port: 8081" from command line, overrides environment by default
 fmt.Printf("SSL: %t\n", conf.SSL)   // "SSL: false" from the "defaultConfig" struct
 ```
 ## Default Behavior
@@ -183,13 +183,13 @@ qcl.Load(&Config{}, qcl.InThisOrder(qcl.Flag, qcl.Environment))
 ### Custom Loaders
 You can create your own loaders
 ```go
-const JSON qcl.Source = "json" // define a new source. This is just a type alias for string
+const JSON qcl.Source = "json" // define a new source. qcl.Source is just a type alias for string
 
 func UseJSON(path string) LoadOption {
-	return func(lc *qcl.LoadConfig) {       // define a new functional option which
-		lc.Sources = append(lc.Sources, JSON) // add the new source to the list of sources. Be aware of the order!
+	return func(lc *qcl.LoadConfig) {                   // define a new functional option which
+		lc.Sources = append(lc.Sources, JSON)       // add the new source to the list of sources. Be aware of the order!
 		lc.Loaders[JSON] = func(config any) error { // define a new loader for the new source that implements qcl.Loader
-      // do something with the path...
+                        // do something with the path...
 		}
 	}
 }
