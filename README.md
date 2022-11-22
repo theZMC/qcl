@@ -36,7 +36,7 @@ defaultConfig := Config{
   SSL:  false,
 }
 
-conf := qcl.Load(&defaultConfig)
+conf, _ := qcl.Load(&defaultConfig)
 
 fmt.Printf("Host: %s\n", conf.Host) // "Host: localhost" from environment
 fmt.Printf("Port: %d\n", conf.Port) // "Host: 8081" from command line, overrides environment by default
@@ -91,7 +91,7 @@ type Config struct {
   Hosts []string
 }
 
-conf := qcl.Load(&Config{})
+conf, _ := qcl.Load(&Config{})
 
 fmt.Printf("Hosts: %s\n", conf.Hosts) // "Hosts: [localhost otherhost yetanotherhost]"
 ```
