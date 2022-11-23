@@ -85,7 +85,7 @@ func setSliceValues(v reflect.Value, values []string, separator string) error {
 
 func setField(v reflect.Value, value string, separator string) error {
 	if !v.CanSet() {
-		return nil
+		return UnsupportedTypeError(v.Kind())
 	}
 	// need to handle time.Duration before the switch..case since it qualifies as an int
 	if v.Type().String() == "time.Duration" {
