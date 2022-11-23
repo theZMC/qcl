@@ -9,6 +9,12 @@ type LoadConfig struct {
 	Loaders map[Source]Loader
 }
 
+var defaultOptions = []LoadOption{
+	UseEnv(),
+	UseFlags(),
+	InThisOrder(Environment, Flag),
+}
+
 // Load loads the configuration from the specified sources. The configuration is loaded in the same order as the
 // sources are specified with later sources overriding earlier ones.
 //
@@ -25,6 +31,10 @@ func Load[T any](defaultConfig *T, opts ...LoadOption) (*T, error) {
 	config := new(LoadConfig)
 	config.Sources = make([]Source, 0, len(opts))
 	config.Loaders = make(map[Source]Loader, len(opts))
+
+	if len(opts) == 0 {
+		opts = defaultOptions
+	}
 
 	for _, opt := range opts {
 		opt(config)
