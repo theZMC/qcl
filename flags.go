@@ -12,6 +12,26 @@ import (
 
 const Flag Source = "flag"
 
+// UseFlags enables configuration from command line flags. Currently, the flag loader is not configurable. It will
+// use the struct field names as the flag names, but lowercased and spit on word boundaries with a dash. For example,
+// the field name "FooBar" will be converted to "foo-bar". You can override the flag name by using the "flag" struct
+// tag. Examples:
+//
+//	type Config struct {
+//	    FooBar string // will look for -foo-bar flag
+//	}
+//	type Config struct {
+//	    FooBar string `flag:"foo"` // will look for -foo flag
+//	}
+//	type Config struct {
+//	    FooBar string `flag:"foo.bar"` // will look for -foo.bar flag
+//	}
+//
+// By default, calling Load() without any LoadOptions will use the flag loader as well as the environment loader, with
+// the flag loader taking precedence. If you want to use only the flag loader, you can call Load with just the UseFlags
+// option:
+//
+//	Load(&config, UseFlags()) // will only use flags
 func UseFlags() LoadOption {
 	return func(o *LoadConfig) {
 		o.Sources = append(o.Sources, Flag)
