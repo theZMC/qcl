@@ -78,7 +78,7 @@ func bindFlags(val reflect.Value, typ reflect.Type, name string) error {
 
 func bindFlag(v reflect.Value, flagName string) error {
 	if !v.CanSet() {
-		return nil
+		return UnsupportedTypeError(v.Kind())
 	}
 	if v.Type().String() == "time.Duration" {
 		flag.DurationVar(v.Addr().Interface().(*time.Duration), flagName, time.Duration(0), "")
@@ -143,9 +143,6 @@ func (m *mapValue) Set(value string) error {
 	values := make([]string, 0)
 	for _, part := range parts {
 		part = strings.TrimSpace(part)
-		if part == "" {
-			continue
-		}
 		kv := strings.SplitN(part, "=", 2)
 		if len(kv) != 2 {
 			return errors.New("invalid map value")
