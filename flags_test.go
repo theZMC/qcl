@@ -15,16 +15,16 @@ type TestConfigWithFlagTag struct {
 
 func Test_UseFlags(t *testing.T) {
 	lc := LoadConfig{
-		Loaders: make(map[Source]Loader),
+		Loaders: make(map[string]Loader),
 	}
 	UseFlags()(&lc)
 	if len(lc.Sources) != 1 {
 		t.Errorf("UseFlags() should add one source")
 	}
-	if lc.Sources[0] != Flag {
+	if lc.Sources[0] != flags {
 		t.Errorf("UseFlags() should add Flag source")
 	}
-	if lc.Loaders[Flag] == nil {
+	if lc.Loaders[flags] == nil {
 		t.Errorf("UseFlags() should add Flag loader")
 	}
 }

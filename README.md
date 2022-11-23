@@ -178,13 +178,15 @@ qcl.Load(&Config{}, qcl.UseEnv(qcl.WithEnvSeparator("|")))
 ### Custom Loaders
 You can create your own loaders
 ```go
-const JSON qcl.Source = "json" // define a new source. qcl.Source is just a type alias for string
-
 func UseJSON(path string) LoadOption {
-	return func(lc *qcl.LoadConfig) {                   // define a new functional option which
-		lc.Sources = append(lc.Sources, JSON)       // add the new source to the list of sources. Be aware of the order!
-		lc.Loaders[JSON] = func(config any) error { // define a new loader for the new source that implements qcl.Loader
-                        // do something with the path...
+	return func(lc *qcl.LoadConfig) { // Make sure the function returns implements the qcl.LoadOption interface
+
+    // add your source to the list of sources. Be aware of the order since the sources are loaded in the order they are added.
+		lc.Sources = append(lc.Sources, "json")
+
+    // add your loader to the Loaders map. Be careful not to override any existing loaders: "env" and "flags" are already taken.
+		lc.Loaders["json"] = func(config any) error {
+      // do your thing...
 		}
 	}
 }

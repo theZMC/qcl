@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-const Environment Source = "env"
+const env = "env"
 
 type envConfig struct {
 	prefix    string
@@ -53,8 +53,8 @@ func UseEnv(opts ...envOption) LoadOption {
 		opt(envConf)
 	}
 	return func(o *LoadConfig) {
-		o.Sources = append(o.Sources, Environment)
-		o.Loaders[Environment] = loadFromEnv(envConf)
+		o.Sources = append(o.Sources, env)
+		o.Loaders[env] = loadFromEnv(envConf)
 	}
 }
 

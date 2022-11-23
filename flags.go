@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-const Flag Source = "flag"
+const flags = "flags"
 
 // UseFlags enables configuration from command line flags. Currently, the flag loader is not configurable. It will
 // use the struct field names as the flag names, but lowercased and spit on word boundaries with a dash. For example,
@@ -34,8 +34,8 @@ const Flag Source = "flag"
 //	Load(&config, UseFlags()) // will only use flags
 func UseFlags() LoadOption {
 	return func(o *LoadConfig) {
-		o.Sources = append(o.Sources, Flag)
-		o.Loaders[Flag] = loadFromFlags
+		o.Sources = append(o.Sources, flags)
+		o.Loaders[flags] = loadFromFlags
 	}
 }
 

@@ -12,16 +12,16 @@ type UnsupportedStruct struct {
 
 func Test_UseEnv(t *testing.T) {
 	lc := LoadConfig{
-		Loaders: make(map[Source]Loader),
+		Loaders: make(map[string]Loader),
 	}
 	UseEnv(WithEnvPrefix("TEST"), WithEnvSeparator("|"), WithEnvStructTag("test"))(&lc)
 	if len(lc.Sources) != 1 {
 		t.Errorf("UseEnv() should add one source")
 	}
-	if lc.Sources[0] != Environment {
+	if lc.Sources[0] != env {
 		t.Errorf("UseEnv() should add Environment source")
 	}
-	if lc.Loaders[Environment] == nil {
+	if lc.Loaders[env] == nil {
 		t.Errorf("UseEnv() should add Environment loader")
 	}
 }
