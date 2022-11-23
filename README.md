@@ -1,8 +1,9 @@
-# QCL: Quick Config Loader
-> **GO 1.18+ ONLY** This library makes use of generics, which are only available in Go 1.18+
-
 [![codecov](https://codecov.io/gh/theZMC/qcl/branch/main/graph/badge.svg?token=CPKRYCUKSU)](https://codecov.io/gh/theZMC/qcl)
 [![CI](https://github.com/theZMC/qcl/actions/workflows/ci.yml/badge.svg)](https://github.com/theZMC/qcl/actions/workflows/ci.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/thezmc/qcl)](https://goreportcard.com/report/github.com/thezmc/qcl)
+
+# QCL: Quick Config Loader
+> **GO 1.18+ ONLY** This library makes use of generics, which are only available in Go 1.18+
 
 `qcl` is a lightweight library for loading configuration values at runtime. It is designed to have a simple API, robust test suite, zero external dependencies, and be easy to integrate into existing projects. If you are looking for a more full-featured configuration library, check out [Viper](https://github.com/spf13/viper) or [Koanf](https://github.com/knadh/koanf). I've used both and they are great libraries, but I wanted something simpler for my use cases. I currently have no plans to support loading configuration from files, so if your use-case requires that, this library is not for you.
 
