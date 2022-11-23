@@ -174,12 +174,6 @@ type Config struct {
 qcl.Load(&Config{}, qcl.UseEnv(qcl.WithEnvSeparator("|")))
 ```
 
-### Custom Load Order
-By default, the library will load environment variables first, followed by command line arguments. You can set a custom load order by using the `qcl.InThisOrder` functional option:
-```go
-qcl.Load(&Config{}, qcl.InThisOrder(qcl.Flag, qcl.Environment))
-```
-
 ## Extending the Library
 ### Custom Loaders
 You can create your own loaders
@@ -196,8 +190,7 @@ func UseJSON(path string) LoadOption {
 }
 ```
 > **NOTE:** The order of the sources is important. The library will load the values from the sources in the order they
-> are defined. If a value is found in multiple sources, the value from the last source will be used. You can use the
-> `qcl.InThisOrder` functional option to change the order of the sources if needed.
+> are defined. If a value is found in multiple sources, the value from the last configured source will be used.
 
 ## License
 [MIT](LICENSE)
