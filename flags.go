@@ -98,7 +98,7 @@ func bindFlags(val reflect.Value, typ reflect.Type, name string) error {
 
 func bindFlag(v reflect.Value, flagName string) error {
 	if !v.CanSet() {
-		return UnsupportedTypeError(v.Kind())
+		return UnsupportedTypeError{v.Kind()}
 	}
 	if v.Type().String() == "time.Duration" {
 		flag.DurationVar(v.Addr().Interface().(*time.Duration), flagName, time.Duration(0), "")
@@ -126,7 +126,7 @@ func bindFlag(v reflect.Value, flagName string) error {
 		}
 		flag.Var(&mapValue{v}, flagName, "")
 	default:
-		return UnsupportedTypeError(v.Kind())
+		return UnsupportedTypeError{v.Kind()}
 	}
 	return nil
 }
@@ -182,7 +182,7 @@ func (i *intValue) Set(value string) error {
 		}
 		i.SetInt(v)
 	default:
-		return UnsupportedTypeError(kind)
+		return UnsupportedTypeError{kind}
 	}
 	return nil
 }
@@ -196,7 +196,7 @@ func (u *uintValue) Set(value string) error {
 		}
 		u.SetUint(v)
 	default:
-		return UnsupportedTypeError(kind)
+		return UnsupportedTypeError{kind}
 	}
 	return nil
 }
@@ -216,7 +216,7 @@ func (f *floatValue) Set(value string) error {
 		}
 		f.SetFloat(v)
 	default:
-		return UnsupportedTypeError(kind)
+		return UnsupportedTypeError{kind}
 	}
 	return nil
 }

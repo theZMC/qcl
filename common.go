@@ -9,10 +9,25 @@ import (
 	"unicode"
 )
 
-var (
-	InvalidMapValueError = func(values ...string) error { return fmt.Errorf("invalid map value: %s", values) }
-	UnsupportedTypeError = func(kind reflect.Kind) error { return fmt.Errorf("unsupported type: %s", kind) }
+type (
+	// InvalidMapValueError is returned when the number of keys and values in a map do not match.
+	InvalidMapValueError struct {
+		keys   []string
+		values []string
+	}
+	// UnsupportedTypeError is returned when a field is not a supported type.
+	UnsupportedTypeError struct {
+		kind reflect.Kind
+	}
 )
+
+func (e InvalidMapValueError) Error() string {
+	return fmt.Sprintf("keys -> values mismatch: %v -> %v", e.keys, e.values)
+}
+
+func (e UnsupportedTypeError) Error() string {
+	return fmt.Sprintf("unsupported type: %s", e.kind)
+}
 
 // splitOnWordBoundaries splits a string on word boundaries. Word boundaries are capitalized letters followed immediately
 // by a lowercase letter. For example, "FooBar" is split into "Foo" and "Bar". The first letter is always capitalized.
@@ -50,7 +65,7 @@ func setMapKeysAndValues(v reflect.Value, keys, values []string, separator strin
 	}
 
 	if len(keys) != len(values) {
-		return InvalidMapValueError(append(keys, values...)...)
+		return InvalidMapValueError{keys, values}
 	}
 	// create a new map with the correct type and set it on the value if the map is nil
 	if v.IsNil() {
@@ -85,7 +100,7 @@ func setSliceValues(v reflect.Value, values []string, separator string) error {
 
 func setField(v reflect.Value, value string, separator string) error {
 	if !v.CanSet() {
-		return UnsupportedTypeError(v.Kind())
+		return UnsupportedTypeError{v.Kind()}
 	}
 	// need to handle time.Duration before the switch..case since it qualifies as an int
 	if v.Type().String() == "time.Duration" {
@@ -132,14 +147,14 @@ func setField(v reflect.Value, value string, separator string) error {
 		for i, kv := range kv {
 			kv := strings.SplitN(kv, "=", 2)
 			if len(kv) != 2 {
-				return InvalidMapValueError(kv...)
+				return InvalidMapValueError{keys, values}
 			}
 			keys[i] = kv[0]
 			values[i] = kv[1]
 		}
 		return setMapKeysAndValues(v, keys, values, separator)
 	default:
-		return UnsupportedTypeError(v.Kind())
+		return UnsupportedTypeError{v.Kind()}
 	}
 	return nil
 }

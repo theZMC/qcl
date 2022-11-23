@@ -228,3 +228,14 @@ func Test_setField(t *testing.T) {
 		}
 	})
 }
+
+func Test_errors(t *testing.T) {
+	var err error = InvalidMapValueError{[]string{"key"}, []string{"val"}}
+	if err.Error() != "keys -> values mismatch: [key] -> [val]" {
+		t.Errorf("InvalidMapValueError.Error() = %v, want %v", err.Error(), "keys -> values mismatch: [key] -> [val]")
+	}
+	err = UnsupportedTypeError{reflect.TypeOf(1).Kind()}
+	if err.Error() != "unsupported type: int" {
+		t.Errorf("UnsupportedTypeError.Error() = %v, want %v", err.Error(), "unsupported type: int")
+	}
+}
