@@ -6,6 +6,50 @@ import (
 	"time"
 )
 
+type UnsupportedStruct struct {
+	Unsupported chan int
+}
+
+func Test_UseEnv(t *testing.T) {
+	lc := LoadConfig{
+		Loaders: make(map[Source]Loader),
+	}
+	UseEnv(WithEnvPrefix("TEST"), WithEnvSeparator("|"), WithEnvStructTag("test"))(&lc)
+	if len(lc.Sources) != 1 {
+		t.Errorf("UseEnv() should add one source")
+	}
+	if lc.Sources[0] != Environment {
+		t.Errorf("UseEnv() should add Environment source")
+	}
+	if lc.Loaders[Environment] == nil {
+		t.Errorf("UseEnv() should add Environment loader")
+	}
+}
+
+func Test_WithEnvPrefix(t *testing.T) {
+	envConf := envConfig{}
+	WithEnvPrefix("TEST_")(&envConf)
+	if envConf.prefix != "TEST_" {
+		t.Errorf("WithEnvPrefix() should set Prefix")
+	}
+}
+
+func Test_WithEnvSeparator(t *testing.T) {
+	envConf := envConfig{}
+	WithEnvSeparator("|")(&envConf)
+	if envConf.separator != "|" {
+		t.Errorf("WithEnvSeparator() should set Separator")
+	}
+}
+
+func Test_WithEnvStructTag(t *testing.T) {
+	envConf := envConfig{}
+	WithEnvStructTag("test")(&envConf)
+	if envConf.structTag != "test" {
+		t.Errorf("WithEnvStructTag() should set Tag")
+	}
+}
+
 func Test_loadFromEnv(t *testing.T) {
 	tests := map[string]struct {
 		prefix    string
@@ -271,6 +315,28 @@ func Test_loadFromEnv(t *testing.T) {
 			}{},
 			envs: map[string]string{
 				"TEST_UNSUPPORTED_TYPE": "unsupported",
+			},
+			wantErr: true,
+		},
+		"unsupported type in nested struct": {
+			prefix: "TEST",
+			want: &struct {
+				UnsupportedTypeStruct struct {
+					UnsupportedType chan int
+				}
+			}{},
+			envs: map[string]string{
+				"TEST_UNSUPPORTED_TYPE_STRUCT_UNSUPPORTED_TYPE": "unsupported",
+			},
+			wantErr: true,
+		},
+		"unsupported type in anonymous nested struct": {
+			prefix: "TEST",
+			want: &struct {
+				UnsupportedStruct
+			}{},
+			envs: map[string]string{
+				"TEST_UNSUPPORTED": "unsupported",
 			},
 			wantErr: true,
 		},

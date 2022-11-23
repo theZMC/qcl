@@ -218,3 +218,13 @@ func Test_setSliceValues(t *testing.T) {
 		}
 	})
 }
+
+func Test_setField(t *testing.T) {
+	t.Run("unsettable", func(t *testing.T) {
+		got := make(chan int, 1)
+		err := setField(reflect.ValueOf(got), "something", "")
+		if err == nil {
+			t.Errorf("setField() error = %v, wantErr %v", err, true)
+		}
+	})
+}
