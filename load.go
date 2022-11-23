@@ -4,11 +4,15 @@ type Loader func(any) error       // Loader is a function that loads the configu
 type LoadOption func(*LoadConfig) // LoadOption is a function that configures the Load function's LoadConfig. The Load function accepts a variable number of LoadOptions.
 type Source string                // Source is the type of the configuration source. The following sources are supported out of the box: Environment and Flag.
 
+// LoadConfig is the configuration struct for the Load function. It contains the configuration sources and the loaders for those sources.
+// Since maps in go are not ordered, the order of the sources is kept in a separate slice. The Load function will iterate over the sources
+// in the Sources slice and call the corresponding loader in the Loaders map.
 type LoadConfig struct {
-	Sources []Source
-	Loaders map[Source]Loader
+	Sources []Source          // Sources is a slice of the configuration sources.
+	Loaders map[Source]Loader // Loaders is a map of the configuration sources and their corresponding loaders.
 }
 
+// DefaultLoadOptions is the default LoadOptions used by the Load function if no LoadOptions are passed into it.
 var DefaultLoadOptions = []LoadOption{
 	UseEnv(),
 	UseFlags(),
