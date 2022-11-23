@@ -21,7 +21,7 @@ var defaultEnvConfig = &envConfig{
 	separator: ",",
 }
 
-type EnvOption func(*envConfig)
+type envOption func(*envConfig)
 
 var (
 	NotAMapError    = errors.New("not a map")
@@ -46,7 +46,7 @@ var (
 //	ocl.Load(defaultConfig, ocl.UseEnv())
 //
 // will set the value of FooBar to the value of the environment variable "FOO_BAR".
-func UseEnv(opts ...EnvOption) LoadOption {
+func UseEnv(opts ...envOption) LoadOption {
 	envConf := defaultEnvConfig
 
 	for _, opt := range opts {
@@ -72,7 +72,7 @@ func UseEnv(opts ...EnvOption) LoadOption {
 // will set the value of Bar to the value of the environment variable "FOO_BAR".
 //
 // The default is no prefix.
-func WithEnvPrefix(prefix string) EnvOption {
+func WithEnvPrefix(prefix string) envOption {
 	return func(c *envConfig) {
 		c.prefix = prefix
 	}
@@ -93,7 +93,7 @@ func WithEnvPrefix(prefix string) EnvOption {
 //
 // By default, the environment loader looks for a struct tag "env" and in the absence of a struct tag, will use the field
 // name itself.
-func WithEnvStructTag(tag string) EnvOption {
+func WithEnvStructTag(tag string) envOption {
 	return func(c *envConfig) {
 		c.structTag = tag
 	}
@@ -128,7 +128,7 @@ func WithEnvStructTag(tag string) EnvOption {
 //	}
 //
 // The default separator is a comma (,)
-func WithEnvSeparator(separator string) EnvOption {
+func WithEnvSeparator(separator string) envOption {
 	return func(c *envConfig) {
 		c.separator = separator
 	}
