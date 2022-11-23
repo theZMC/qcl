@@ -1,3 +1,3 @@
 module github.com/thezmc/qcl
 
-go 1.19
+go 1.18
