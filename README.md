@@ -1,7 +1,7 @@
 [![codecov](https://codecov.io/gh/theZMC/qcl/branch/main/graph/badge.svg?token=CPKRYCUKSU)](https://codecov.io/gh/theZMC/qcl)
 [![CI](https://github.com/theZMC/qcl/actions/workflows/ci.yml/badge.svg)](https://github.com/theZMC/qcl/actions/workflows/ci.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/thezmc/qcl)](https://goreportcard.com/report/github.com/thezmc/qcl)
-
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/theZMC/qcl?color=orange&label=ver)
 # QCL: Quick Config Loader
 > **GO 1.18+ ONLY** This library makes use of generics, which are only available in Go 1.18+
 
